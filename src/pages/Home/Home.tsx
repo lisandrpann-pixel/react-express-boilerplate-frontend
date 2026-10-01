@@ -7,10 +7,10 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import styles from './Home.module.css'
-import Loader from '@/assets/loader.svg?react'
+import { Loader } from '@/components/Loader'
 
 export const Home = () => {
-  const { data, isLoading } = useGetUsersQuery({})
+  const { data, isLoading, isSuccess } = useGetUsersQuery({})
 
   const { data: users } = data || {}
 
@@ -18,25 +18,23 @@ export const Home = () => {
     <div className={styles.root}>
       <Header />
 
-      {isLoading && <Loader />}
+      <DndProvider backend={HTML5Backend}>
+        <Loader isLoading={isLoading} isSuccess={isSuccess}>
+          <main className={styles.main}>
+            <Column>
+              {users?.map((user) => (
+                <Card {...user} key={user._id} />
+              ))}
+            </Column>
 
-      <main className={styles.main}>
-        <Column>
-          <DndProvider backend={HTML5Backend}>
-            {users?.map((user) => (
-              <Card {...user} key={user._id} />
-            ))}
-          </DndProvider>
-        </Column>
-
-        <Column>
-          <DndProvider backend={HTML5Backend}>
-            {users?.map((user) => (
-              <Card {...user} key={user._id} />
-            ))}
-          </DndProvider>
-        </Column>
-      </main>
+            <Column>
+              {users?.map((user) => (
+                <Card {...user} key={user._id} />
+              ))}
+            </Column>
+          </main>
+        </Loader>
+      </DndProvider>
     </div>
   )
 }
