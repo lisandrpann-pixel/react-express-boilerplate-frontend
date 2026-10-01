@@ -1,0 +1,10 @@
+.root {
+  background-color: #141414;
+  border-radius: var(--g-border-radius-md);
+  color: #fff;
+  padding: var(--g-gap-md);
+}
+
+.title {
+  font-weight: 400;
+}
