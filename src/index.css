@@ -12,3 +12,7 @@ body {
   --g-gap-md: 16px;
   --g-gap-lg: 24px;
 }
+
+body * {
+  box-sizing: border-box;
+}

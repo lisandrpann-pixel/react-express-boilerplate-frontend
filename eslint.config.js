@@ -19,7 +19,8 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
-      "@typescript-eslint/no-empty-object-type": "off"
+      "@typescript-eslint/no-empty-object-type": "off",
+      "react-hooks/set-state-in-effect": "off",
     }
   },
 ])

@@ -1,0 +1,1 @@
+export const SCROLL_MARGIN = '300px'

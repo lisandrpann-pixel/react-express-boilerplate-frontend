@@ -15,4 +15,5 @@
 .visibilityOn {
   opacity: 1;
   transition-delay: 500ms;
+  pointer-events: all;
 }

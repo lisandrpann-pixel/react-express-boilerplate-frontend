@@ -1,13 +1,3 @@
-.root {
-    padding: var(--g-gap-lg);
-}
-
-.main {
-    display: grid;
-    gap: var(--g-gap-lg);
-    grid-template-columns: 1fr 1fr;
-}
-
 .filter {
     padding: var(--g-gap-sm);
     position: sticky;
