@@ -1,51 +1,44 @@
 import styles from './FilterForm.module.css'
 import SearchIcon from '@/assets/search.svg?react'
 import ResetIcon from '@/assets/reset.svg?react'
-import { useState, type FC } from 'react'
+import { memo, useState, type FC } from 'react'
 import type { FilterFormProps } from './FilterForm.types'
-import { ICONS_SIZE } from './FilterForm.config'
+import { ICONS_SIZE } from '@/configs/layout.configs'
+import { Button } from '../Button'
+import { Input } from '../Input'
+import classNames from 'classnames'
 
-export const FilterForm: FC<FilterFormProps> = ({ onSubmit }) => {
+export const FilterForm: FC<FilterFormProps> = memo(({ onSubmit, className }) => {
   const [userId, setUserId] = useState('')
 
-  const filterUsersById = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const submitForm = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     onSubmit?.(userId)
   }
 
-  const changeUserIdFilter = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+  const changeUserId = (
+    e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>
+  ) => {
     setUserId(e.target.value)
   }
 
-  const resetFilter = () => {
+  const resetForm = () => {
     setUserId('')
     onSubmit?.(undefined)
   }
 
   return (
-    <form onSubmit={filterUsersById} className={styles.filter}>
-      <input 
-        name="filterById" 
-        value={userId} 
-        onChange={changeUserIdFilter}
-        className={styles.input}
-      />
+    <form onSubmit={submitForm} className={classNames(styles.root, className)}>
+      <Input name="filterById" placeholder="id, диапазон ids: 1-12, список ids: 1,2,12" value={userId} onChange={changeUserId} />
 
-      <button 
-        type="submit"
-        className={styles.button}
-      >
+      <Button type="submit">
         <SearchIcon {...ICONS_SIZE} />
-      </button>
+      </Button>
 
-      <button
-        type="button"
-        className={styles.button}
-        onClick={resetFilter}
-      >
+      <Button type="button" onClick={resetForm}>
         <ResetIcon {...ICONS_SIZE} />
-      </button>
+      </Button>
     </form>
   )
-}
+})

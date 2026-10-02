@@ -20,7 +20,7 @@ const injectedRtkApi = api.injectEndpoints({
 export { injectedRtkApi as api }
 export type GetUsersApiResponse = /** status 200 Страница пользователей */ {
   data: {
-    _id: string
+    id: string
     index: number
     name: string
   }[]
@@ -41,7 +41,7 @@ export type GetUsersApiArg = {
   userIdFilter?: string
 }
 export type GetUsersByIdApiResponse = /** status 200 Найденный пользователь */ {
-  _id: string
+  id: string
   index: number
   name: string
 }

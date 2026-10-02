@@ -1,0 +1,15 @@
+.form {
+  padding: var(--g-gap-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--g-gap-md);
+
+  background-color: #303030;
+}
+
+.showFormButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--g-gap-sm);
+}

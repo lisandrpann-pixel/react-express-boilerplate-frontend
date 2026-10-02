@@ -1,12 +1,19 @@
 .root {
-    padding: var(--g-gap-lg);
+  padding: var(--g-gap-lg);
 }
 
 .main {
-    display: grid;
-    gap: var(--g-gap-lg);
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  gap: var(--g-gap-lg);
+  grid-template-columns: 1fr 1fr;
 }
 
+.filterForm {
+  position: sticky;
+  top: 0;
+}
 
-    
+.addUserForm {
+  position: sticky;
+  bottom: 0;
+}

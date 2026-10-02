@@ -1,0 +1,16 @@
+.root {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: none;
+  border: 0;
+
+  background-color: #9a9494;
+}
+
+.circle {
+  border-radius: var(--g-border-radius-circle);
+}

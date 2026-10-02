@@ -1,15 +1,15 @@
 .loader {
-  position: fixed; 
+  position: fixed;
   inset: 0;
-  display: grid; 
+  display: grid;
   place-items: center;
 }
 
 .visibilityOff {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 1000ms ease;
-    transition-delay: 500ms;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1000ms ease;
+  transition-delay: 500ms;
 }
 
 .visibilityOn {
