@@ -1,6 +1,6 @@
 import type { GetApiUsersApiResponse } from '@/api'
 
-export const SCROLL_MARGIN = '300px'
+export const ROOT_MARGIN = '300px'
 
 export const PAGINATION_DEFAULT = {
   offset: 0,

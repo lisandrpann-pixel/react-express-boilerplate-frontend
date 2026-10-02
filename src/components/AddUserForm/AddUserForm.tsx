@@ -41,7 +41,7 @@ export const AddUserForm: FC<AddUserFormProps> = memo(({ onSubmit, className }) 
     <form onSubmit={submitForm} className={classNames(styles.root, className)}>
       {formVisibility ? (
         <div className={styles.form}>
-          <Input name="filterById" value={userId} onChange={changeUserId} />
+          <Input name="userId" placeholder="Новый id" value={userId} onChange={changeUserId} />
 
           <Button type="submit">
             <SendIcon {...ICONS_SIZE} />

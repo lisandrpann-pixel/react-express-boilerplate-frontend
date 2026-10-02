@@ -15,21 +15,22 @@ import { useInView } from 'react-intersection-observer'
 import styles from './Home.module.css'
 import { Loader } from '@/components/Loader'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { PAGINATION_DEFAULT, SCROLL_MARGIN } from './Home.config'
+import { PAGINATION_DEFAULT, ROOT_MARGIN } from './Home.config'
 import { FilterForm } from '@/components/FilterForm'
 import { AddUserForm } from '@/components/AddUserForm'
 import { scrollToTop } from '@/utils/common.utils'
 
 export const Home = () => {
-  const { ref: thresholdRef, inView: isThresholdInView } = useInView({
-    scrollMargin: SCROLL_MARGIN,
-  })
-
   const [createUser] = usePostApiUsersMutation()
 
   const [choosenUsers, setChoosenUsers] = useState<GetApiUsersByIdApiResponse[]>([])
 
   const [isLoadingData, setLoadingData] = useState(true)
+
+  const { ref: thresholdRef, inView: isThresholdInView } = useInView({
+    rootMargin: ROOT_MARGIN,
+    skip: isLoadingData,
+  })
 
   const [getUsers, { data }] = useLazyGetApiUsersQuery()
 
@@ -121,13 +122,13 @@ export const Home = () => {
   }, [loadUsers])
 
   useEffect(() => {
-    if (!isThresholdInView || isLoadingData || !paginationRef.current.hasMore) return
-
-    loadUsers({
-      offset: paginationRef.current.offset,
-      userIdFilter: paginationRef.current.userIdFilter,
-    })
-  }, [loadUsers, isThresholdInView, isLoadingData])
+    if (isThresholdInView && paginationRef.current.hasMore) {
+      loadUsers({
+        offset: paginationRef.current.offset,
+        userIdFilter: paginationRef.current.userIdFilter,
+      })
+    }
+  }, [loadUsers, isThresholdInView])
 
   return (
     <div className={styles.root}>
