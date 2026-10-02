@@ -1,3 +1,3 @@
-import type { GetUsersByIdApiResponse } from '@/api/api'
+import type { GetApiUsersByIdApiResponse } from '@/api'
 
-export interface CardProps extends GetUsersByIdApiResponse {}
+export interface CardProps extends GetApiUsersByIdApiResponse {}

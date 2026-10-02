@@ -22,7 +22,7 @@ export const AddUserForm: FC<AddUserFormProps> = memo(({ onSubmit, className }) 
     e.preventDefault()
 
     onSubmit?.(userId)
-    
+
     setUserId('')
   }
 
@@ -54,6 +54,7 @@ export const AddUserForm: FC<AddUserFormProps> = memo(({ onSubmit, className }) 
       ) : (
         <div className={styles.showFormButtonContainer}>
           <Button
+            className={styles.showFormButton}
             viewType="circle"
             onClick={showForm}
           >

@@ -1,15 +1,24 @@
 .root {
+  padding: var(--g-gap-md);
+  display: flex;
+  align-items: center;
+  gap: var(--g-gap-md);
+
   background-color: #141414;
   border-radius: var(--g-border-radius-md);
   color: #fff;
-  padding: var(--g-gap-md);
-}
-
-.title {
-  font-weight: 400;
-  margin: 0;
 }
 
 .id {
   color: #9a9494;
+  line-height: 1;
+}
+
+.choose {
+  transform: rotate(90deg);
+  cursor: pointer;
+
+  path {
+    fill: #9a9494;
+  }
 }

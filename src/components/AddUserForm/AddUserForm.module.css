@@ -13,3 +13,7 @@
   justify-content: flex-end;
   padding: var(--g-gap-sm);
 }
+
+.showFormButton {
+  box-shadow: 0 0 10px 0 #252525;
+}

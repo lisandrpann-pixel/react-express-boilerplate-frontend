@@ -1,7 +1,8 @@
 import {
-  useLazyGetUsersQuery,
-  type GetUsersApiArg,
-  type GetUsersByIdApiResponse,
+  useLazyGetApiUsersQuery,
+  usePostApiUsersMutation,
+  type GetApiUsersApiArg,
+  type GetApiUsersByIdApiResponse,
 } from '@/api'
 import { Card } from '@/components/Card'
 import { Column } from '@/components/Column'
@@ -17,25 +18,36 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { PAGINATION_DEFAULT, SCROLL_MARGIN } from './Home.config'
 import { FilterForm } from '@/components/FilterForm'
 import { AddUserForm } from '@/components/AddUserForm'
+import { scrollToTop } from '@/utils/common.utils'
 
 export const Home = () => {
   const { ref: thresholdRef, inView: isThresholdInView } = useInView({
     scrollMargin: SCROLL_MARGIN,
   })
 
+  const [createUser] = usePostApiUsersMutation()
+
+  const [choosenUsers, setChoosenUsers] = useState<GetApiUsersByIdApiResponse[]>([])
+
   const [isLoadingData, setLoadingData] = useState(true)
 
-  const [getUsers, { data }] = useLazyGetUsersQuery()
+  const [getUsers, { data }] = useLazyGetApiUsersQuery()
 
-  const [users, setUsers] = useState<GetUsersByIdApiResponse[]>([])
+  const [users, setUsers] = useState<GetApiUsersByIdApiResponse[]>([])
 
   const { data: dataUsers } = data || {}
 
   const paginationRef = useRef(PAGINATION_DEFAULT)
 
+  // const chooseUser = useCallback((userId: number) => {
+  //   setChoosenUsers((prevChoosenUsers) => {
+      
+  //   })
+  // }, [])
+
   const filterUsers = useCallback(
     async (userIdFilter?: string) => {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      scrollToTop()
 
       setLoadingData(true)
 
@@ -44,9 +56,7 @@ export const Home = () => {
       if (response.data) {
         paginationRef.current = {
           ...response.data.pagination,
-          offset: response.data.pagination.hasMore
-            ? response.data.pagination.limit
-            : paginationRef.current.offset,
+          offset: PAGINATION_DEFAULT.limit
         }
 
         setUsers(response.data.data)
@@ -58,7 +68,7 @@ export const Home = () => {
   )
 
   const loadUsers = useCallback(
-    async (props: GetUsersApiArg = {}) => {
+    async (props: GetApiUsersApiArg = {}) => {
       setLoadingData(true)
 
       const response = await getUsers(props)
@@ -80,23 +90,44 @@ export const Home = () => {
   )
 
   const addUser = useCallback(
-    async (userIdFilter?: string) => {
-      console.log('add', userIdFilter)
+    async (userId?: string) => {
+      setLoadingData(true)
+
+      scrollToTop()
+
+      const createUserResponse = await createUser({ 
+        body: { id: Number(userId) } 
+      })
+
+      if (createUserResponse.data) {        
+        const getUsersResponse = await getUsers({})
+
+        if (getUsersResponse.data) {
+          paginationRef.current = {
+            ...getUsersResponse.data.pagination,
+            offset: PAGINATION_DEFAULT.limit
+          }
+
+          setUsers(getUsersResponse.data.data)
+        }
+      }
+      
+      setLoadingData(false)
     }, 
-  [])
+  [createUser, getUsers])
 
   useEffect(() => {
     loadUsers()
   }, [loadUsers])
 
   useEffect(() => {
-    if (!isThresholdInView || !paginationRef.current.hasMore) return
+    if (!isThresholdInView || isLoadingData || !paginationRef.current.hasMore) return
 
     loadUsers({
       offset: paginationRef.current.offset,
       userIdFilter: paginationRef.current.userIdFilter,
     })
-  }, [loadUsers, isThresholdInView])
+  }, [loadUsers, isThresholdInView, isLoadingData])
 
   return (
     <div className={styles.root}>
@@ -108,7 +139,7 @@ export const Home = () => {
             <Column>
               <FilterForm onSubmit={filterUsers} className={styles.filterForm} />
 
-              {users?.map((user) => (
+              {users.map((user) => (
                 <Card {...user} key={user.id} />
               ))}
 
@@ -117,7 +148,11 @@ export const Home = () => {
               <AddUserForm onSubmit={addUser} className={styles.addUserForm} />
             </Column>
 
-            <Column>choisen</Column>
+            <Column>
+              {choosenUsers.map((user) => (
+                <Card {...user} key={user.id} />
+              ))}
+            </Column>
           </main>
         </Loader>
       </DndProvider>

@@ -6,7 +6,7 @@ import classNames from 'classnames'
 export const Button: FC<ButtonProps> = memo(
   ({ children, className, viewType = 'square', ...props }) => {
     return (
-      <button {...props} className={classNames(styles.root, className, viewType )}>
+      <button {...props} className={classNames(styles.root, className, styles[viewType] )}>
         {children}
       </button>
     )

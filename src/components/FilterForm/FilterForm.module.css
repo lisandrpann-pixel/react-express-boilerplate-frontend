@@ -2,6 +2,7 @@
   padding: var(--g-gap-sm);
   display: flex;
   align-items: center;
+  z-index: 10;
   gap: var(--g-gap-md);
 
   background-color: #303030;
