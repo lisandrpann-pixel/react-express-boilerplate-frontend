@@ -3,6 +3,7 @@ import SearchIcon from '@/assets/search.svg?react'
 import ResetIcon from '@/assets/reset.svg?react'
 import { useState, type FC } from 'react'
 import type { FilterFormProps } from './FilterForm.types'
+import { ICONS_SIZE } from './FilterForm.config'
 
 export const FilterForm: FC<FilterFormProps> = ({ onSubmit }) => {
   const [userId, setUserId] = useState('')
@@ -15,6 +16,11 @@ export const FilterForm: FC<FilterFormProps> = ({ onSubmit }) => {
 
   const changeUserIdFilter = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
     setUserId(e.target.value)
+  }
+
+  const resetFilter = () => {
+    setUserId('')
+    onSubmit?.(undefined)
   }
 
   return (
@@ -30,13 +36,15 @@ export const FilterForm: FC<FilterFormProps> = ({ onSubmit }) => {
         type="submit"
         className={styles.button}
       >
-        <SearchIcon width={24} height={24} />
+        <SearchIcon {...ICONS_SIZE} />
       </button>
 
       <button
+        type="button"
         className={styles.button}
+        onClick={resetFilter}
       >
-        <ResetIcon width={24} height={24} />
+        <ResetIcon {...ICONS_SIZE} />
       </button>
     </form>
   )

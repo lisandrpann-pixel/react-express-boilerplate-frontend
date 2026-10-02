@@ -10,7 +10,7 @@ import { useInView } from "react-intersection-observer"
 import styles from './Home.module.css'
 import { Loader } from '@/components/Loader'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { SCROLL_MARGIN } from './Home.config'
+import { PAGINATION_DEFAULT, SCROLL_MARGIN } from './Home.config'
 import { FilterForm } from '@/components/FilterForm'
 
 export const Home = () => {
@@ -24,49 +24,65 @@ export const Home = () => {
 
   const [users, setUsers] = useState<GetUsersByIdApiResponse[]>([])
 
-  const { data: dataUsers, pagination } = data || {}
+  const { data: dataUsers } = data || {}
 
-  const paginationLimit = pagination?.limit || 0
+  const paginationRef = useRef(PAGINATION_DEFAULT)
 
-  const paginationHasMore = pagination?.hasMore || false
+  const filterUsers = useCallback(async (userIdFilter?: string) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 
-  const paginationOffsetRef = useRef(0)
-
-  const paginationHasMoreRef = useRef(false)
-
-  const loadUsers = useCallback(async (props: GetUsersApiArg = {}) => {
     setLoadingData(true)
 
-    await getUsers(props)
+    const response = await getUsers({ userIdFilter })
+
+    if (response.data) {
+      paginationRef.current = {
+        ...response.data.pagination,
+        offset: response.data.pagination.hasMore 
+          ? response.data.pagination.limit
+          : paginationRef.current.offset
+      }
+      
+      setUsers(response.data.data)
+    }
 
     setLoadingData(false)
   }, [getUsers])
 
-  const filterUsersById = (userId: string) => {
-    console.log(userId)
-  }
+  const loadUsers = useCallback(async (props: GetUsersApiArg = {}) => {
+    setLoadingData(true)
+
+    const response = await getUsers(props)
+
+    if (response.data) {
+      paginationRef.current = {
+        ...response.data.pagination,
+        offset: response.data.pagination.hasMore 
+          ? paginationRef.current.offset + response.data.pagination.limit
+          : paginationRef.current.offset
+      }
+
+      setUsers((prevUsers) => [
+        ...prevUsers,
+        ...(response.data?.data || []),
+      ])
+    }
+
+    setLoadingData(false)
+  }, [getUsers])
 
   useEffect(() => {
     loadUsers()
   }, [loadUsers])
 
   useEffect(() => {
-    if (!isThresholdInView || !paginationHasMoreRef.current) return
+    if (!isThresholdInView || !paginationRef.current.hasMore) return
 
     loadUsers({
-      offset: paginationOffsetRef.current,
+      offset: paginationRef.current.offset,
+      userIdFilter: paginationRef.current.userIdFilter,
     })
   }, [loadUsers, isThresholdInView])
-
-  useEffect(() => {
-    paginationOffsetRef.current += paginationLimit
-    paginationHasMoreRef.current = paginationHasMore
-
-    setUsers((prevUsers) => [
-      ...prevUsers,
-      ...(dataUsers || []),
-    ])
-  }, [dataUsers, paginationHasMore, paginationLimit])
 
   return (
     <div className={styles.root}>
@@ -76,13 +92,13 @@ export const Home = () => {
         <Loader isLoading={isLoadingData} isSuccess={!!dataUsers}>
           <main className={styles.main}>
             <Column>
-              <FilterForm onSubmit={filterUsersById} />
+              <FilterForm onSubmit={filterUsers} />
 
               {users?.map((user) => (
                 <Card {...user} key={`${user.index}-${user._id}`} />
               ))}
 
-              <div ref={thresholdRef} />
+              {data?.pagination.hasMore && <div ref={thresholdRef} />}
             </Column>
 
             <Column>

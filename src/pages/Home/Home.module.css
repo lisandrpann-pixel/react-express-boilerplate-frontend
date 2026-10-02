@@ -8,37 +8,5 @@
     grid-template-columns: 1fr 1fr;
 }
 
-.filter {
-    padding: var(--g-gap-sm);
-    position: sticky;
-    top: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--g-gap-md);
 
-    background-color: #303030;
-}
-
-.input {
-    padding: var(--g-gap-sm);
-    flex-grow: 1;
-    height: 40px;
-    
-    border: 1px solid #787777;
-    background-color: #000000;
-    color: #f0f0f0;
-}
-
-.button {
-    height: 40px;
-    width: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: none;
-    border: 0;
-    
-    background-color: #9a9494;
-}
     

@@ -1,1 +1,4 @@
-export const SCROLL_MARGIN = '300px'
+export const ICONS_SIZE = {
+    width: 24,
+    height: 24,
+}

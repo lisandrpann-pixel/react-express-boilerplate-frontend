@@ -7,6 +7,7 @@ const injectedRtkApi = api.injectEndpoints({
         params: {
           offset: queryArg.offset,
           limit: queryArg.limit,
+          userIdFilter: queryArg.userIdFilter,
         },
       }),
     }),
@@ -25,6 +26,7 @@ export type GetUsersApiResponse = /** status 200 Страница пользов
   }[]
   pagination: {
     offset: number
+    userIdFilter?: string
     limit: number
     total: number
     hasMore: boolean
@@ -35,6 +37,8 @@ export type GetUsersApiArg = {
   offset?: number
   /** Максимальное количество пользователей в ответе */
   limit?: number
+  /** Фильтр по id пользователя */
+  userIdFilter?: string
 }
 export type GetUsersByIdApiResponse = /** status 200 Найденный пользователь */ {
   _id: string

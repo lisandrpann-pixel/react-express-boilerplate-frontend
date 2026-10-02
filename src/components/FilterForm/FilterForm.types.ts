@@ -1,5 +1,5 @@
-import type { Action } from "@/types/common.types"
+import type { ActionAsync } from "@/types/common.types"
 
 export interface FilterFormProps {
-    onSubmit?: Action<string>
+    onSubmit?: ActionAsync<string | undefined>
 }

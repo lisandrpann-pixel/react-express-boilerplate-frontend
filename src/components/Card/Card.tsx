@@ -4,11 +4,13 @@ import styles from './Card.module.css'
 
 export const Card: FC<CardProps> = memo(({
   name,
-  index
+  index,
+  _id,
 }) => {
   return (
-    <div className={styles.root}>
-      <h4 className={styles.title}>{index + 1}. {name}</h4>
-    </div>
+    <article className={styles.root}>
+      <h3 className={styles.title}>{index + 1}. {name}</h3>
+      <div className={styles.id}>{_id}</div>
+    </article>
   )
 })
