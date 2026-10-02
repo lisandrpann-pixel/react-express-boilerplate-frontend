@@ -1,14 +1,14 @@
 import styles from './FilterForm.module.css'
 import SearchIcon from '@/assets/search.svg?react'
 import ResetIcon from '@/assets/reset.svg?react'
-import { memo, useState, type FC } from 'react'
+import { memo, useEffect, useState, type FC } from 'react'
 import type { FilterFormProps } from './FilterForm.types'
 import { ICONS_SIZE } from '@/configs/layout.configs'
 import { Button } from '../Button'
 import { Input } from '../Input'
 import classNames from 'classnames'
 
-export const FilterForm: FC<FilterFormProps> = memo(({ onSubmit, className }) => {
+export const FilterForm: FC<FilterFormProps> = memo(({ onSubmit, className, hasToCleanForm }) => {
   const [userId, setUserId] = useState('')
 
   const submitForm = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -27,6 +27,12 @@ export const FilterForm: FC<FilterFormProps> = memo(({ onSubmit, className }) =>
     setUserId('')
     onSubmit?.(undefined)
   }
+
+  useEffect(() => {
+    if (hasToCleanForm) {
+      setUserId('')
+    }
+  }, [hasToCleanForm])
 
   return (
     <form onSubmit={submitForm} className={classNames(styles.root, className)}>

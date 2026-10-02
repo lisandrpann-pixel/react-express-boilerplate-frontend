@@ -21,7 +21,7 @@ import { AddUserForm } from '@/components/AddUserForm'
 import { scrollToTop } from '@/utils/common.utils'
 
 export const Home = () => {
-  const [createUser] = usePostApiUsersMutation()
+  const [createUser, { isLoading: isLoadingCreateUser }] = usePostApiUsersMutation()
 
   const [choosenUsers, setChoosenUsers] = useState<GetApiUsersByIdApiResponse[]>([])
 
@@ -138,7 +138,11 @@ export const Home = () => {
         <Loader isLoading={isLoadingData} isSuccess={!!dataUsers}>
           <main className={styles.main}>
             <Column>
-              <FilterForm onSubmit={filterUsers} className={styles.filterForm} />
+              <FilterForm 
+                onSubmit={filterUsers} 
+                className={styles.filterForm} 
+                hasToCleanForm={isLoadingCreateUser}
+              />
 
               {users.map((user) => (
                 <Card {...user} key={user.id} />
@@ -146,7 +150,10 @@ export const Home = () => {
 
               {data?.pagination.hasMore && <div ref={thresholdRef} />}
 
-              <AddUserForm onSubmit={addUser} className={styles.addUserForm} />
+              <AddUserForm 
+                onSubmit={addUser} 
+                className={styles.addUserForm} 
+              />
             </Column>
 
             <Column>
