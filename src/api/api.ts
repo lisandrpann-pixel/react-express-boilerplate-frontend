@@ -8,6 +8,7 @@ const injectedRtkApi = api.injectEndpoints({
           offset: queryArg.offset,
           limit: queryArg.limit,
           userIdFilter: queryArg.userIdFilter,
+          isChosenFilter: queryArg.isChosenFilter,
         },
       }),
     }),
@@ -51,6 +52,8 @@ export type GetApiUsersApiResponse = /** status 200 Страница польз�
     hasMore: boolean
     /** Возвращается только если фильтр задан */
     userIdFilter?: string
+    /** Возвращается только если фильтр задан */
+    isChosenFilter?: boolean
   }
 }
 export type GetApiUsersApiArg = {
@@ -61,6 +64,9 @@ export type GetApiUsersApiArg = {
   /** Список id через запятую, где каждый элемент это либо одно значение, либо включительный диапазон from-to. Допустимые значения 5, 1-12, 1,2,12, 1,5-9,20. Значение 1 означает ровно id 1, а не все id содержащие 1. Формы можно смешивать в одном параметре. При отсутствии параметра фильтрация не применяется. Некорректное значение, в том числе обратный диапазон 5-1, приводит к ответу 400.
    */
   userIdFilter?: string
+  /** Признак, выбран ли пользователь или нет. Если isChosen true, возвращаются пользователи с isChosen=true, если false, возвращаются с isChosen=false, иначе возвращаются все пользователи. Ответ с учетом пагинации.
+   */
+  isChosenFilter?: boolean
 }
 export type PostApiUsersApiResponse = /** status 201 Пользователь создан */ {
   id: number

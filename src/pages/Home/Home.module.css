@@ -1,11 +1,9 @@
-.root {
-  padding: var(--g-gap-lg);
-}
-
 .main {
   display: grid;
+  padding: var(--g-gap-lg);
   gap: var(--g-gap-lg);
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: calc(100vh - var(--g-gap-lg) * 2);
 }
 
 .filterForm {
@@ -16,4 +14,8 @@
 .addUserForm {
   position: sticky;
   bottom: 0;
+}
+
+.column {
+  overflow: auto;
 }

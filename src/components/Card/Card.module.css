@@ -14,11 +14,18 @@
   line-height: 1;
 }
 
-.choose {
-  transform: rotate(90deg);
+.checked, .unchecked {
   cursor: pointer;
+}
 
+.checked {
   path {
-    fill: var(--g-color-accent);
+    stroke: var(--g-color-success);
+  }
+}
+
+.unchecked {
+  path {
+    stroke: var(--g-color-accent);
   }
 }

@@ -20,9 +20,8 @@ export const Loader: FC<LoaderProps> = ({ children, isLoading, isSuccess }) => {
 
       <div
         className={classNames(
-          styles.main,
           styles.visibilityOff,
-          isSuccess && styles.visibilityOn
+          isSuccess && styles.visibilityOn,
         )}
       >
         {children}

@@ -7,15 +7,15 @@ import CheckedIcon from '@/assets/checked.svg?react'
 import { ICONS_SIZE } from '@/configs/layout.configs'
 
 export const Card: FC<CardProps> = memo((props) => {
-  const { id, isChosen, onChoose } = props
+  const { id, isChosen, onChoose, displayChosen } = props
+
+  const Chechbox = isChosen ? CheckedIcon : UncheckedIcon
 
   return (
     <article className={styles.root}>
-      {isChosen ? (
-        <CheckedIcon className={styles.choose} {...ICONS_SIZE} />
-      ) : (
-        <UncheckedIcon
-          className={styles.choose}
+      {displayChosen && (
+        <Chechbox 
+          className={isChosen ? styles.checked : styles.unchecked}
           {...ICONS_SIZE}
           onClick={() => onChoose?.(props)}
         />

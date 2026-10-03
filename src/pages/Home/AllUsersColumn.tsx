@@ -1,0 +1,48 @@
+import { Card } from '@/components/Card'
+import { Column } from '@/components/Column'
+
+import styles from './Home.module.css'
+import { FilterForm } from '@/components/FilterForm'
+import { AddUserForm } from '@/components/AddUserForm'
+import type { UseGetUsersProps } from './Home.types'
+import { useGetUsers } from './useGetUsers'
+import type { FC } from 'react'
+
+export const AllUsersColumn: FC<UseGetUsersProps> = (props) => {
+  const {
+    hasMore,
+  } = props
+
+  const {
+    thresholdRef,
+    chooseUser,
+    filterUsers,
+    addUser,
+    users,
+    isLoadingCreateUser,
+  } = useGetUsers(props)
+
+  return (
+    <Column>
+      <FilterForm
+        onSubmit={filterUsers}
+        className={styles.filterForm}
+        hasToCleanForm={isLoadingCreateUser}
+      />
+
+      {users.map((user) => (
+        <Card 
+          {...user} 
+          key={user.id} 
+          onChoose={chooseUser} 
+          isChosen={user.isChosen}
+          displayChosen
+        />
+      ))}
+
+      {hasMore && <div ref={thresholdRef} />}
+
+      <AddUserForm onSubmit={addUser} className={styles.addUserForm} />
+    </Column>
+  )
+}
