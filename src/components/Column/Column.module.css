@@ -4,5 +4,5 @@
   gap: var(--g-gap-md);
   padding: var(--g-gap-md);
   border-radius: var(--g-border-radius-md);
-  background-color: #545454;
+  background-color: var(--g-color-bg-raised);
 }

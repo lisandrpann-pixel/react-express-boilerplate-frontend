@@ -4,13 +4,13 @@
   align-items: center;
   gap: var(--g-gap-md);
 
-  background-color: #141414;
+  background-color: var(--g-color-bg-surface);
   border-radius: var(--g-border-radius-md);
-  color: #fff;
+  color: var(--g-color-text-bright);
 }
 
 .id {
-  color: #9a9494;
+  color: var(--g-color-text-muted);
   line-height: 1;
 }
 
@@ -19,6 +19,6 @@
   cursor: pointer;
 
   path {
-    fill: #9a9494;
+    fill: var(--g-color-accent);
   }
 }

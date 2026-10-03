@@ -23,11 +23,14 @@ import { scrollToTop } from '@/utils/common.utils'
 import { toastSuccess } from '@/utils/notifications.utils'
 
 export const Home = () => {
-  const [createUser, { isLoading: isLoadingCreateUser }] = usePostApiUsersMutation()
+  const [createUser, { isLoading: isLoadingCreateUser }] =
+    usePostApiUsersMutation()
 
   const [changeUser] = usePutApiUsersMutation()
 
-  const [choosenUsers, setChoosenUsers] = useState<GetApiUsersByIdApiResponse[]>([])
+  const [choosenUsers, setChoosenUsers] = useState<
+    GetApiUsersByIdApiResponse[]
+  >([])
 
   const [isLoadingData, setLoadingData] = useState(true)
 
@@ -44,31 +47,34 @@ export const Home = () => {
 
   const paginationRef = useRef(PAGINATION_DEFAULT)
 
-  const chooseUser = useCallback(async (user: GetApiUsersByIdApiResponse) => {
-    setLoadingData(true)
+  const chooseUser = useCallback(
+    async (user: GetApiUsersByIdApiResponse) => {
+      setLoadingData(true)
 
-    const changeUserResponse = await changeUser({ body: { 
-      ...user,
-      isChosen: user.isChosen 
-        ? false
-        : true
-    }})
+      const changeUserResponse = await changeUser({
+        body: {
+          ...user,
+          isChosen: user.isChosen ? false : true,
+        },
+      })
 
-    if (changeUserResponse.data) {        
-      const getUsersResponse = await getUsers({})
+      if (changeUserResponse.data) {
+        const getUsersResponse = await getUsers({})
 
-      if (getUsersResponse.data) {
-        paginationRef.current = {
-          ...getUsersResponse.data.pagination,
-          offset: PAGINATION_DEFAULT.limit
+        if (getUsersResponse.data) {
+          paginationRef.current = {
+            ...getUsersResponse.data.pagination,
+            offset: PAGINATION_DEFAULT.limit,
+          }
+
+          setUsers(getUsersResponse.data.data)
         }
-
-        setUsers(getUsersResponse.data.data)
       }
-    }
 
-    setLoadingData(false)
-  }, [changeUser, getUsers])
+      setLoadingData(false)
+    },
+    [changeUser, getUsers]
+  )
 
   const filterUsers = useCallback(
     async (userIdFilter?: string) => {
@@ -81,7 +87,7 @@ export const Home = () => {
       if (response.data) {
         paginationRef.current = {
           ...response.data.pagination,
-          offset: PAGINATION_DEFAULT.limit
+          offset: PAGINATION_DEFAULT.limit,
         }
 
         setUsers(response.data.data)
@@ -120,28 +126,29 @@ export const Home = () => {
 
       scrollToTop()
 
-      const createUserResponse = await createUser({ 
-        body: { id: Number(userId) } 
+      const createUserResponse = await createUser({
+        body: { id: Number(userId) },
       })
 
-      if (createUserResponse.data) {        
+      if (createUserResponse.data) {
         const getUsersResponse = await getUsers({})
 
         if (getUsersResponse.data) {
           paginationRef.current = {
             ...getUsersResponse.data.pagination,
-            offset: PAGINATION_DEFAULT.limit
+            offset: PAGINATION_DEFAULT.limit,
           }
 
           setUsers(getUsersResponse.data.data)
         }
       }
-      
+
       setLoadingData(false)
 
       toastSuccess(`Пользователь с id - ${userId} успешно создан!`)
-    }, 
-  [createUser, getUsers])
+    },
+    [createUser, getUsers]
+  )
 
   useEffect(() => {
     loadUsers()
@@ -164,9 +171,9 @@ export const Home = () => {
         <Loader isLoading={isLoadingData} isSuccess={!!dataUsers}>
           <main className={styles.main}>
             <Column>
-              <FilterForm 
-                onSubmit={filterUsers} 
-                className={styles.filterForm} 
+              <FilterForm
+                onSubmit={filterUsers}
+                className={styles.filterForm}
                 hasToCleanForm={isLoadingCreateUser}
               />
 
@@ -176,10 +183,7 @@ export const Home = () => {
 
               {data?.pagination.hasMore && <div ref={thresholdRef} />}
 
-              <AddUserForm 
-                onSubmit={addUser} 
-                className={styles.addUserForm} 
-              />
+              <AddUserForm onSubmit={addUser} className={styles.addUserForm} />
             </Column>
 
             <Column>

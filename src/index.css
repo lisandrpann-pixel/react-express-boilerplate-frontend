@@ -1,17 +1,11 @@
+@import './styles/variables/color.variables.css';
+@import './styles/variables/layout.variables.css';
+
 body {
   margin: 0;
   padding: 0;
 
-  background-color: #303030;
-
-  --g-border-radius-sm: 4px;
-  --g-border-radius-md: 8px;
-  --g-border-radius-lg: 16px;
-  --g-border-radius-circle: 50%;
-
-  --g-gap-sm: 12px;
-  --g-gap-md: 16px;
-  --g-gap-lg: 24px;
+  background-color: var(--g-color-bg-base);
 }
 
 body * {

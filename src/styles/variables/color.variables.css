@@ -1,0 +1,16 @@
+:root {
+  --g-color-bg-base: #303030;
+  --g-color-bg-raised: #545454;
+  --g-color-bg-surface: #141414;
+  --g-color-bg-input: #000000;
+
+  --g-color-text-primary: #f0f0f0;
+  --g-color-text-bright: #ffffff;
+  --g-color-text-muted: #9a9494;
+
+  --g-color-accent: #9a9494;
+
+  --g-color-border: #787777;
+
+  --g-color-shadow: #252525;
+}

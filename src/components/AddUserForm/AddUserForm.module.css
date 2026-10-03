@@ -4,7 +4,7 @@
   align-items: center;
   gap: var(--g-gap-md);
 
-  background-color: #303030;
+  background-color: var(--g-color-bg-base);
 }
 
 .showFormButtonContainer {
@@ -15,5 +15,5 @@
 }
 
 .showFormButton {
-  box-shadow: 0 0 10px 0 #252525;
+  box-shadow: 0 0 10px 0 var(--g-color-shadow);
 }

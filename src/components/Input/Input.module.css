@@ -3,7 +3,7 @@
   flex-grow: 1;
   height: 40px;
 
-  border: 1px solid #787777;
-  background-color: #000000;
-  color: #f0f0f0;
+  border: 1px solid var(--g-color-border);
+  background-color: var(--g-color-bg-input);
+  color: var(--g-color-text-primary);
 }

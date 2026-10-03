@@ -11,9 +11,15 @@ export const Card: FC<CardProps> = memo((props) => {
 
   return (
     <article className={styles.root}>
-      {isChosen
-        ? <CheckedIcon className={styles.choose} {...ICONS_SIZE} />
-        : <UncheckedIcon className={styles.choose} {...ICONS_SIZE} onClick={() => onChoose?.(props)} />}
+      {isChosen ? (
+        <CheckedIcon className={styles.choose} {...ICONS_SIZE} />
+      ) : (
+        <UncheckedIcon
+          className={styles.choose}
+          {...ICONS_SIZE}
+          onClick={() => onChoose?.(props)}
+        />
+      )}
 
       <span className={styles.id}>{id}</span>
     </article>
