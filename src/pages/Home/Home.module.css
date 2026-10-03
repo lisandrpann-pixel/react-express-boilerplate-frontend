@@ -5,17 +5,3 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: calc(100vh - var(--g-gap-lg) * 2);
 }
-
-.filterForm {
-  position: sticky;
-  top: 0;
-}
-
-.addUserForm {
-  position: sticky;
-  bottom: 0;
-}
-
-.column {
-  overflow: auto;
-}

@@ -8,10 +8,10 @@ import {
 import { useInView } from 'react-intersection-observer'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { PAGINATION_DEFAULT, ROOT_MARGIN } from './Home.config'
+import { PAGINATION_DEFAULT, ROOT_MARGIN } from '../Home.config'
 import { scrollToTop } from '@/utils/common.utils'
 import { toastSuccess } from '@/utils/notifications.utils'
-import type { UseGetUsersProps } from './Home.types'
+import type { UseGetUsersProps } from '../Home.types'
 
 export const useGetUsers = ({
   getUsers,

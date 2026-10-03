@@ -4,10 +4,10 @@ import { Column } from '@/components/Column'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import styles from './Home.module.css'
+import styles from './shared.module.css'
 import { FilterForm } from '@/components/FilterForm'
-import type { UseGetUsersProps } from './Home.types'
-import { useGetUsers } from './useGetUsers'
+import type { UseGetUsersProps } from '../Home.types'
+import { useGetUsers } from '../hooks/useGetUsers'
 import type { FC } from 'react'
 
 export const ChosenUsersColumn: FC<UseGetUsersProps> = (props) => {

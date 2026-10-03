@@ -1,11 +1,11 @@
 import { Card } from '@/components/Card'
 import { Column } from '@/components/Column'
 
-import styles from './Home.module.css'
+import styles from './shared.module.css'
 import { FilterForm } from '@/components/FilterForm'
 import { AddUserForm } from '@/components/AddUserForm'
-import type { UseGetUsersProps } from './Home.types'
-import { useGetUsers } from './useGetUsers'
+import type { UseGetUsersProps } from '../Home.types'
+import { useGetUsers } from '../hooks/useGetUsers'
 import type { FC } from 'react'
 
 export const AllUsersColumn: FC<UseGetUsersProps> = (props) => {

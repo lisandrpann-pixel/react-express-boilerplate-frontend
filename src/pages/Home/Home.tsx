@@ -1,6 +1,6 @@
 import styles from './Home.module.css'
-import { AllUsersColumn } from './AllUsersColumn'
-import { ChosenUsersColumn } from './ChosenUsersColumn'
+import { AllUsersColumn } from './components/AllUsersColumn'
+import { ChosenUsersColumn } from './components/ChosenUsersColumn'
 import { useLazyGetApiUsersQuery, type GetApiUsersApiArg } from '@/api'
 import { useCallback, useState } from 'react'
 import { Loader } from '@/components/Loader'
