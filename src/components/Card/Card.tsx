@@ -3,12 +3,17 @@ import type { CardProps } from './Card.types'
 import styles from './Card.module.css'
 
 import UncheckedIcon from '@/assets/unchecked.svg?react'
+import CheckedIcon from '@/assets/checked.svg?react'
 import { ICONS_SIZE } from '@/configs/layout.configs'
 
-export const Card: FC<CardProps> = memo(({ id }) => {
+export const Card: FC<CardProps> = memo((props) => {
+  const { id, isChosen, onChoose } = props
+
   return (
     <article className={styles.root}>
-      <UncheckedIcon className={styles.choose} {...ICONS_SIZE} />
+      {isChosen
+        ? <CheckedIcon className={styles.choose} {...ICONS_SIZE} />
+        : <UncheckedIcon className={styles.choose} {...ICONS_SIZE} onClick={() => onChoose?.(props)} />}
 
       <span className={styles.id}>{id}</span>
     </article>

@@ -1,6 +1,7 @@
 import {
   useLazyGetApiUsersQuery,
   usePostApiUsersMutation,
+  usePutApiUsersMutation,
   type GetApiUsersApiArg,
   type GetApiUsersByIdApiResponse,
 } from '@/api'
@@ -19,9 +20,12 @@ import { PAGINATION_DEFAULT, ROOT_MARGIN } from './Home.config'
 import { FilterForm } from '@/components/FilterForm'
 import { AddUserForm } from '@/components/AddUserForm'
 import { scrollToTop } from '@/utils/common.utils'
+import { toastSuccess } from '@/utils/notifications.utils'
 
 export const Home = () => {
   const [createUser, { isLoading: isLoadingCreateUser }] = usePostApiUsersMutation()
+
+  const [changeUser] = usePutApiUsersMutation()
 
   const [choosenUsers, setChoosenUsers] = useState<GetApiUsersByIdApiResponse[]>([])
 
@@ -40,11 +44,31 @@ export const Home = () => {
 
   const paginationRef = useRef(PAGINATION_DEFAULT)
 
-  // const chooseUser = useCallback((userId: number) => {
-  //   setChoosenUsers((prevChoosenUsers) => {
-      
-  //   })
-  // }, [])
+  const chooseUser = useCallback(async (user: GetApiUsersByIdApiResponse) => {
+    setLoadingData(true)
+
+    const changeUserResponse = await changeUser({ body: { 
+      ...user,
+      isChosen: user.isChosen 
+        ? false
+        : true
+    }})
+
+    if (changeUserResponse.data) {        
+      const getUsersResponse = await getUsers({})
+
+      if (getUsersResponse.data) {
+        paginationRef.current = {
+          ...getUsersResponse.data.pagination,
+          offset: PAGINATION_DEFAULT.limit
+        }
+
+        setUsers(getUsersResponse.data.data)
+      }
+    }
+
+    setLoadingData(false)
+  }, [changeUser, getUsers])
 
   const filterUsers = useCallback(
     async (userIdFilter?: string) => {
@@ -114,6 +138,8 @@ export const Home = () => {
       }
       
       setLoadingData(false)
+
+      toastSuccess(`Пользователь с id - ${userId} успешно создан!`)
     }, 
   [createUser, getUsers])
 
@@ -145,7 +171,7 @@ export const Home = () => {
               />
 
               {users.map((user) => (
-                <Card {...user} key={user.id} />
+                <Card {...user} key={user.id} onChoose={chooseUser} />
               ))}
 
               {data?.pagination.hasMore && <div ref={thresholdRef} />}

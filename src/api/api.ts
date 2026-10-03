@@ -18,6 +18,13 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    putApiUsers: build.mutation<PutApiUsersApiResponse, PutApiUsersApiArg>({
+      query: (queryArg) => ({
+        url: `/api/users`,
+        method: 'PUT',
+        body: queryArg.body,
+      }),
+    }),
     getApiUsersById: build.query<
       GetApiUsersByIdApiResponse,
       GetApiUsersByIdApiArg
@@ -31,6 +38,10 @@ export { injectedRtkApi as api }
 export type GetApiUsersApiResponse = /** status 200 Страница пользователей */ {
   data: {
     id: number
+    /** Отмечен ли пользователь как выбранный */
+    isChosen: boolean
+    /** Порядковый номер пользователя */
+    order: number
   }[]
   pagination: {
     offset: number
@@ -53,6 +64,8 @@ export type GetApiUsersApiArg = {
 }
 export type PostApiUsersApiResponse = /** status 201 Пользователь создан */ {
   id: number
+  isChosen: boolean
+  order: number
 }
 export type PostApiUsersApiArg = {
   body: {
@@ -60,9 +73,26 @@ export type PostApiUsersApiArg = {
     id: number
   }
 }
+export type PutApiUsersApiResponse = /** status 201 Пользователь изменён */ {
+  id: number
+  isChosen: boolean
+  order: number
+}
+export type PutApiUsersApiArg = {
+  body: {
+    /** Идентификатор изменяемого пользователя */
+    id: number
+    /** Отмечен ли пользователь как выбранный */
+    isChosen: boolean
+    /** Новый порядковый номер пользователя */
+    order: number
+  }
+}
 export type GetApiUsersByIdApiResponse =
   /** status 200 Найденный пользователь */ {
     id: number
+    isChosen: boolean
+    order: number
   }
 export type GetApiUsersByIdApiArg = {
   /** Идентификатор пользователя */
@@ -72,6 +102,7 @@ export const {
   useGetApiUsersQuery,
   useLazyGetApiUsersQuery,
   usePostApiUsersMutation,
+  usePutApiUsersMutation,
   useGetApiUsersByIdQuery,
   useLazyGetApiUsersByIdQuery,
 } = injectedRtkApi

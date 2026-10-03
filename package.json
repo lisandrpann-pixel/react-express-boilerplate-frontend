@@ -13,13 +13,16 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.13.0",
+    "axios": "^1.20.0",
     "classnames": "^2.5.1",
+    "http-status-codes": "^2.3.0",
     "react": "^19.2.8",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.2.8",
     "react-intersection-observer": "^11.0.1",
-    "react-redux": "^9.3.0"
+    "react-redux": "^9.3.0",
+    "react-toastify": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
