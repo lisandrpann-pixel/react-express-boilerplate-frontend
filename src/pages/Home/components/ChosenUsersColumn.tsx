@@ -9,6 +9,7 @@ import { FilterForm } from '@/components/FilterForm'
 import type { UseGetUsersProps } from '../Home.types'
 import { useGetUsers } from '../hooks/useGetUsers'
 import type { FC } from 'react'
+import { ColumnHeader } from '@/components/ColumnHeader'
 
 export const ChosenUsersColumn: FC<UseGetUsersProps> = (props) => {
   const {
@@ -24,10 +25,12 @@ export const ChosenUsersColumn: FC<UseGetUsersProps> = (props) => {
   return (
       <DndProvider backend={HTML5Backend}>
         <Column>
-          <FilterForm
-            onSubmit={filterUsers}
-            className={styles.filterForm}
-          />
+          <ColumnHeader>
+            <FilterForm
+              onSubmit={filterUsers}
+              className={styles.filterForm}
+            />
+          </ColumnHeader>
 
           {users.map((user) => (
             <Card 

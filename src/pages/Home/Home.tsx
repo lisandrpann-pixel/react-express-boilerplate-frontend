@@ -35,6 +35,7 @@ export const Home = () => {
         <main className={styles.main}>
           <AllUsersColumn 
             getUsers={getUsers} 
+            getUsersChosen={getUsersWithFilters}
             switchOnLoader={switchOnLoader}
             switchOffLoader={switchOffLoader}
             hasMore={hasMoreUsers}

@@ -64,6 +64,10 @@ export const useGetUsers = ({
 
         //   setUsers(getUsersResponse.data.data)
         // }
+
+        toastSuccess(`Пользователь с id - ${chosenUser.id} ${chosenUser.isChosen 
+          ? 'убран'
+          : 'выбран'}!`)
       }
 
       switchOffLoader()
@@ -136,11 +140,11 @@ export const useGetUsers = ({
 
           setUsers(getUsersResponse.data.data)
         }
+
+        toastSuccess(`Пользователь с id - ${userId} успешно создан!`)
       }
 
       switchOffLoader()
-
-      toastSuccess(`Пользователь с id - ${userId} успешно создан!`)
     },
     [createUser, getUsers, switchOffLoader, switchOnLoader]
   )

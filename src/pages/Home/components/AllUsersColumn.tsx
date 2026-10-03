@@ -7,6 +7,7 @@ import { AddUserForm } from '@/components/AddUserForm'
 import type { UseGetUsersProps } from '../Home.types'
 import { useGetUsers } from '../hooks/useGetUsers'
 import type { FC } from 'react'
+import { ColumnHeader } from '@/components/ColumnHeader'
 
 export const AllUsersColumn: FC<UseGetUsersProps> = (props) => {
   const {
@@ -24,11 +25,13 @@ export const AllUsersColumn: FC<UseGetUsersProps> = (props) => {
 
   return (
     <Column>
-      <FilterForm
-        onSubmit={filterUsers}
-        className={styles.filterForm}
-        hasToCleanForm={isLoadingCreateUser}
-      />
+      <ColumnHeader>
+        <FilterForm
+          onSubmit={filterUsers}
+          className={styles.filterForm}
+          hasToCleanForm={isLoadingCreateUser}
+        />
+      </ColumnHeader>
 
       {users.map((user) => (
         <Card 
