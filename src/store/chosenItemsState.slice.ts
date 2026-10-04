@@ -33,7 +33,10 @@ export const chosenItemsSlice = createSlice({
       if (action.payload.isChosen) {
         chosenItemsState.value = chosenItemsState.value.filter((item) => item.id !== action.payload.id)
       } else {
-        chosenItemsState.value.push(action.payload)
+        chosenItemsState.value.push({
+          ...action.payload,
+          isChosen: true
+        })
       }
       
       chosenItemsState.value.sort((itemLeft, itemRight) => itemLeft.order - itemRight.order)

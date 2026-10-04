@@ -172,7 +172,6 @@ export const ItemsColumn = () => {
   }, [loadItems])
 
   useEffect(() => {
-    console.log(isThresholdInView, paginationRef.current.hasMore)
     if (isThresholdInView && paginationRef.current.hasMore) {
       loadItems({
         offset: paginationRef.current.offset,
@@ -197,7 +196,6 @@ export const ItemsColumn = () => {
               {...item}
               key={item.id}
               onChoose={chooseItem}
-              isChosen={item.isChosen}
               displayChosen
             />
           ))

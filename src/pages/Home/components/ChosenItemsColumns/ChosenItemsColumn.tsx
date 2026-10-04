@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react'
 import { ColumnHeader } from '@/components/ColumnHeader'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { Empty } from '@/components/Empty'
-import { useLazyGetApiItemsQuery, type GetApiItemsApiArg } from '@/api'
+import { useLazyGetApiItemsQuery, usePutApiItemsMutation, type GetApiItemsApiArg, type GetApiItemsByIdApiResponse } from '@/api'
 import { PAGINATION_DEFAULT } from '../../Home.config'
 import { Loader } from '@/components/Loader'
 import { useItemsColumn } from '../../hooks/useItemsColumn'
@@ -15,6 +15,8 @@ import {
   loadChosenItemsAction,
   selectChosenItems,
 } from '@/store/chosenItemsState.slice'
+import { toastSuccess } from '@/utils/notifications.utils'
+import { chooseItemAction } from '@/store/itemsState.slice'
 
 export const ChosenItemsColumn = () => {
   const {
@@ -43,6 +45,8 @@ export const ChosenItemsColumn = () => {
   const chosenItemsState = useAppSelector(selectChosenItems)
 
   const dispatch = useAppDispatch()
+
+  const [changeItem] = usePutApiItemsMutation()
 
   const filterItems = useCallback(
     async (itemIdFilter?: string) => {
@@ -95,6 +99,32 @@ export const ChosenItemsColumn = () => {
     [dispatch, getChosenItems, paginationRef, switchOffLoader, switchOnLoader]
   )
 
+  const chooseItem = useCallback(
+    async (chosenItem: GetApiItemsByIdApiResponse) => {
+      switchOnLoader()
+
+      const changeItemResponse = await changeItem({
+        body: {
+          ...chosenItem,
+          isChosen: !chosenItem.isChosen,
+        },
+      })
+
+      if (changeItemResponse.data) {
+        dispatch(chooseItemAction(chosenItem))
+
+        toastSuccess(
+          `Пользователь с id - ${chosenItem.id} ${
+            chosenItem.isChosen ? 'убран' : 'выбран'
+          }!`
+        )
+      }
+
+      switchOffLoader()
+    },
+    [changeItem, dispatch, switchOffLoader, switchOnLoader]
+  )
+
   useEffect(() => {
     loadItems()
   }, [loadItems])
@@ -116,7 +146,14 @@ export const ChosenItemsColumn = () => {
         </ColumnHeader>
 
         {chosenItemsState.length ? (
-          chosenItemsState.map((item) => <Card {...item} key={item.id} />)
+          chosenItemsState.map((item) => (
+          <Card 
+            {...item} 
+            key={item.id} 
+            onChoose={chooseItem}
+            displayDelete
+          />
+        ))
         ) : (
           <Empty />
         )}

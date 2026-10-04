@@ -15,7 +15,8 @@
 }
 
 .checked,
-.unchecked {
+.unchecked,
+.delete {
   cursor: pointer;
 }
 
@@ -25,7 +26,8 @@
   }
 }
 
-.unchecked {
+.unchecked, 
+.delete {
   path {
     stroke: var(--g-color-accent);
   }
