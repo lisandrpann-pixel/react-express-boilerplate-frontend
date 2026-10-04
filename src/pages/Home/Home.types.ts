@@ -1,5 +1,5 @@
-import type { GetApiItemsApiArg, GetApiItemsApiResponse } from "@/api"
-import type { Action } from "@/types/common.types"
+import type { GetApiItemsApiArg, GetApiItemsApiResponse } from '@/api'
+import type { Action } from '@/types/common.types'
 
 export interface UseGetItemsProps {
   getItems: GetItemsType
@@ -9,6 +9,6 @@ export interface UseGetItemsProps {
   hasMore?: boolean
 }
 
-export type GetItemsType = (args: GetApiItemsApiArg) => Promise<{ 
+export type GetItemsType = (args: GetApiItemsApiArg) => Promise<{
   data?: GetApiItemsApiResponse
-}> 
+}>

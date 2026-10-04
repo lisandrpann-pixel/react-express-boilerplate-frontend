@@ -1,9 +1,3 @@
-.addItemForm {
-  position: sticky;
-  bottom: 0;
-  align-self: end;
-}
-
 .column {
   overflow: auto;
   height: calc(100vh - var(--g-gap-lg) * 2);

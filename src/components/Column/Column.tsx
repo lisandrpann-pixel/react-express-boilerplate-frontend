@@ -1,7 +1,12 @@
-import { type FC } from 'react'
 import type { ColumnProps } from './Column.types'
 import styles from './Column.module.css'
+import { forwardRef } from 'react'
+import classNames from 'classnames'
 
-export const Column: FC<ColumnProps> = ({ children }) => {
-  return <div className={styles.root}>{children}</div>
-}
+export const Column = forwardRef<HTMLDivElement, ColumnProps>(
+  ({ children, className }, ref) => (
+    <div className={classNames(styles.root, className)} ref={ref}>
+      {children}
+    </div>
+  )
+)

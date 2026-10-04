@@ -1,52 +1,128 @@
 import { Card } from '@/components/Card'
 import { Column } from '@/components/Column'
-
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-
-import { FilterForm } from '@/pages/Home/components/FilterForm'
-import type { UseGetItemsProps } from '../../Home.types'
-import { useGetItems } from '../../hooks/useGetItems'
-import type { FC } from 'react'
+import { FilterForm } from '../FilterForm'
+import { useCallback, useEffect } from 'react'
 import { ColumnHeader } from '@/components/ColumnHeader'
-import { useAppSelector } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { Empty } from '@/components/Empty'
+import { useLazyGetApiItemsQuery, type GetApiItemsApiArg } from '@/api'
+import { PAGINATION_DEFAULT } from '../../Home.config'
+import { Loader } from '@/components/Loader'
+import { useItemsColumn } from '../../hooks/useItemsColumn'
+import styles from './ChosenItemsColumn.module.css'
+import {
+  filterChosenItemsAction,
+  loadChosenItemsAction,
+  selectChosenItems,
+} from '@/store/chosenItemsState.slice'
 
-export const ChosenItemsColumn: FC<UseGetItemsProps> = (props) => {
+export const ChosenItemsColumn = () => {
   const {
-    hasMore,
-  } = props
-
-  const chosenItemsState = useAppSelector(state => state.chosenItemsState.value)
-
-  const {
+    scrollToTop,
+    isLoadingData,
+    paginationRef,
+    columnRef,
     thresholdRef,
-    filterItems,
-    items,
-  } = useGetItems(props, chosenItemsState)
+    isThresholdInView,
+    switchOnLoader,
+    switchOffLoader,
+  } = useItemsColumn()
+
+  const [getItems, { data, isSuccess: isSuccessGetItems }] =
+    useLazyGetApiItemsQuery()
+
+  const getChosenItems = useCallback(
+    (props: GetApiItemsApiArg) => {
+      return getItems({ ...props, isChosenFilter: true })
+    },
+    [getItems]
+  )
+
+  const hasMore = data?.pagination.hasMore
+
+  const chosenItemsState = useAppSelector(selectChosenItems)
+
+  const dispatch = useAppDispatch()
+
+  const filterItems = useCallback(
+    async (itemIdFilter?: string) => {
+      scrollToTop()
+
+      switchOnLoader()
+
+      const response = await getChosenItems({ itemIdFilter })
+
+      if (response.data) {
+        paginationRef.current = {
+          ...response.data.pagination,
+          offset: PAGINATION_DEFAULT.limit,
+        }
+
+        dispatch(filterChosenItemsAction(response.data.data))
+      }
+
+      switchOffLoader()
+    },
+    [
+      dispatch,
+      getChosenItems,
+      paginationRef,
+      scrollToTop,
+      switchOffLoader,
+      switchOnLoader,
+    ]
+  )
+
+  const loadItems = useCallback(
+    async (props: GetApiItemsApiArg = {}) => {
+      switchOnLoader()
+
+      const response = await getChosenItems(props)
+
+      if (response.data) {
+        paginationRef.current = {
+          ...response.data.pagination,
+          offset: response.data.pagination.hasMore
+            ? paginationRef.current.offset + response.data.pagination.limit
+            : paginationRef.current.offset,
+        }
+
+        dispatch(loadChosenItemsAction(response.data.data))
+      }
+
+      switchOffLoader()
+    },
+    [dispatch, getChosenItems, paginationRef, switchOffLoader, switchOnLoader]
+  )
+
+  useEffect(() => {
+    loadItems()
+  }, [loadItems])
+
+  useEffect(() => {
+    if (isThresholdInView && paginationRef.current.hasMore) {
+      loadItems({
+        offset: paginationRef.current.offset,
+        itemIdFilter: paginationRef.current.itemIdFilter,
+      })
+    }
+  }, [loadItems, isThresholdInView, paginationRef])
 
   return (
-      <DndProvider backend={HTML5Backend}>
-        <Column>
-          <ColumnHeader>
-            <FilterForm
-              onSubmit={filterItems}
-            />
-          </ColumnHeader>
+    <Loader isLoading={isLoadingData} isSuccess={isSuccessGetItems}>
+      <Column ref={columnRef} className={styles.column}>
+        <ColumnHeader>
+          <FilterForm onSubmit={filterItems} />
+        </ColumnHeader>
 
-          {items.length 
-            ? items.map((item) => (
-              <Card 
-                {...item} 
-                key={item.id} 
-              />
-            ))
-            : (
-              <Empty>Пока не добавлено ни одной записи</Empty>
-            )}
+        {chosenItemsState.length ? (
+          chosenItemsState.map((item) => <Card {...item} key={item.id} />)
+        ) : (
+          <Empty />
+        )}
 
-          {hasMore && <div ref={thresholdRef} />}
-        </Column>
-      </DndProvider>
+        {hasMore && <div ref={thresholdRef} />}
+      </Column>
+    </Loader>
   )
 }

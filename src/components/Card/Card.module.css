@@ -14,7 +14,8 @@
   line-height: 1;
 }
 
-.checked, .unchecked {
+.checked,
+.unchecked {
   cursor: pointer;
 }
 

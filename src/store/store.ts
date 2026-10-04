@@ -7,7 +7,7 @@ export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     itemsState: itemsReducer,
-    chosenItemsState: chosenItemsReducer
+    chosenItemsState: chosenItemsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
