@@ -1,0 +1,10 @@
+.root {
+  padding: var(--g-gap-lg);
+  color: var(--g-color-text-muted);
+  font-weight: 400;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}

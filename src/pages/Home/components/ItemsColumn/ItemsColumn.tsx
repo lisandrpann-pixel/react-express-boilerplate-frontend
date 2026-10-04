@@ -8,11 +8,15 @@ import type { UseGetItemsProps } from '../../Home.types'
 import { useGetItems } from '../../hooks/useGetItems'
 import type { FC } from 'react'
 import { ColumnHeader } from '@/components/ColumnHeader'
+import { useAppSelector } from '@/store/hooks'
+import { Empty } from '@/components/Empty'
 
 export const AllItemsColumn: FC<UseGetItemsProps> = (props) => {
   const {
     hasMore,
   } = props
+
+  const itemsState = useAppSelector(state => state.itemsState.value)
 
   const {
     thresholdRef,
@@ -21,7 +25,7 @@ export const AllItemsColumn: FC<UseGetItemsProps> = (props) => {
     addItem,
     items,
     isLoadingCreateItem,
-  } = useGetItems(props)
+  } = useGetItems(props, itemsState)
 
   return (
     <Column>
@@ -32,15 +36,19 @@ export const AllItemsColumn: FC<UseGetItemsProps> = (props) => {
         />
       </ColumnHeader>
 
-      {items.map((item) => (
-        <Card 
-          {...item} 
-          key={item.id} 
-          onChoose={chooseItem} 
-          isChosen={item.isChosen}
-          displayChosen
-        />
-      ))}
+      {items.length 
+        ? items.map((item) => (
+          <Card 
+            {...item} 
+            key={item.id} 
+            onChoose={chooseItem} 
+            isChosen={item.isChosen}
+            displayChosen
+          />
+        ))
+        : (
+          <Empty>Пока не добавлено ни одной записи</Empty>
+        )}
 
       {hasMore && <div ref={thresholdRef} />}
 

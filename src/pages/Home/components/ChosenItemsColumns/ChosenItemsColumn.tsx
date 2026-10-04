@@ -9,17 +9,21 @@ import type { UseGetItemsProps } from '../../Home.types'
 import { useGetItems } from '../../hooks/useGetItems'
 import type { FC } from 'react'
 import { ColumnHeader } from '@/components/ColumnHeader'
+import { useAppSelector } from '@/store/hooks'
+import { Empty } from '@/components/Empty'
 
 export const ChosenItemsColumn: FC<UseGetItemsProps> = (props) => {
   const {
     hasMore,
   } = props
 
+  const chosenItemsState = useAppSelector(state => state.chosenItemsState.value)
+
   const {
     thresholdRef,
     filterItems,
     items,
-  } = useGetItems(props)
+  } = useGetItems(props, chosenItemsState)
 
   return (
       <DndProvider backend={HTML5Backend}>
@@ -30,12 +34,16 @@ export const ChosenItemsColumn: FC<UseGetItemsProps> = (props) => {
             />
           </ColumnHeader>
 
-          {items.map((item) => (
-            <Card 
-              {...item} 
-              key={item.id} 
-            />
-          ))}
+          {items.length 
+            ? items.map((item) => (
+              <Card 
+                {...item} 
+                key={item.id} 
+              />
+            ))
+            : (
+              <Empty>Пока не добавлено ни одной записи</Empty>
+            )}
 
           {hasMore && <div ref={thresholdRef} />}
         </Column>

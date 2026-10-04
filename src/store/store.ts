@@ -1,11 +1,13 @@
 import { api } from '@/api'
 import { configureStore } from '@reduxjs/toolkit'
-import usersReducer from './itemsState.slice'
+import itemsReducer from './itemsState.slice'
+import chosenItemsReducer from './chosenItemsState.slice'
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
-    itemsState: usersReducer
+    itemsState: itemsReducer,
+    chosenItemsState: chosenItemsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

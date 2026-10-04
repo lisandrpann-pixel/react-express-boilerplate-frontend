@@ -4,8 +4,8 @@ import ResetIcon from '@/assets/reset.svg?react'
 import { memo, useEffect, useState, type FC } from 'react'
 import type { FilterFormProps } from './FilterForm.types'
 import { ICONS_SIZE } from '@/configs/layout.configs'
-import { Button } from '../../../../components/Button'
-import { Input } from '../../../../components/Input'
+import { Button } from '@/components/Button'
+import { Input } from '@/components/Input'
 import classNames from 'classnames'
 
 export const FilterForm: FC<FilterFormProps> = memo(

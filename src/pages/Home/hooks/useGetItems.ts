@@ -12,13 +12,17 @@ import { PAGINATION_DEFAULT, ROOT_MARGIN } from '../Home.config'
 import { scrollToTop } from '@/utils/common.utils'
 import { toastSuccess } from '@/utils/notifications.utils'
 import type { UseGetItemsProps } from '../Home.types'
+import type { ItemsState } from '@/store/itemsState.slice'
+import { useAppDispatch } from '@/store/hooks'
 
 export const useGetItems = ({
   getItems,
   switchOffLoader,
   switchOnLoader,
   isLoadingData,
-}: UseGetItemsProps) => {
+}: UseGetItemsProps, itemsState: ItemsState['value']) => {
+  const dispatch = useAppDispatch()
+  
   const [createItem, { isLoading: isLoadingCreateItem }] =
     usePostApiItemsMutation()
 

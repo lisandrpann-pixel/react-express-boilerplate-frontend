@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import type { GetApiItemsApiResponse, GetApiItemsByIdApiResponse } from '@/api'
 
-export interface ItemsState {
+export interface ChosenItemsState {
   value: {
     items: GetApiItemsByIdApiResponse[]
     pagination: Omit<GetApiItemsApiResponse['pagination'], 'total'> & {
@@ -12,7 +12,7 @@ export interface ItemsState {
   }
 }
 
-const initialState: ItemsState = {
+const initialState: ChosenItemsState = {
   value: {
     items: [],
     pagination: {
@@ -23,11 +23,11 @@ const initialState: ItemsState = {
   }
 }
 
-export const itemsSlice = createSlice({
-  name: 'itemsState',
+export const chosenItemsSlice = createSlice({
+  name: 'chosenItemsState',
   initialState,
   reducers: {
-    loadItems: (itemsState, action: PayloadAction<ItemsState['value']>) => {
+    loadItems: (itemsState, action: PayloadAction<ChosenItemsState['value']>) => {
       itemsState.value.items = [
         ...itemsState.value.items,
         ...action.payload.items
@@ -41,7 +41,7 @@ export const itemsSlice = createSlice({
       }
     },
 
-    filterItems: (itemsState, action: PayloadAction<ItemsState['value']>) => {
+    filterItems: (itemsState, action: PayloadAction<ChosenItemsState['value']>) => {
       itemsState.value.items = action.payload.items
 
       itemsState.value.pagination = {
@@ -50,7 +50,7 @@ export const itemsSlice = createSlice({
       }
     },
 
-    addItem: (itemsState, action: PayloadAction<ItemsState['value']>) => {
+    addItem: (itemsState, action: PayloadAction<ChosenItemsState['value']>) => {
       itemsState.value.items = action.payload.items
 
       itemsState.value.pagination = {
@@ -69,8 +69,8 @@ export const itemsSlice = createSlice({
   }
 })
 
-export const { chooseItem } = itemsSlice.actions
+export const { chooseItem } = chosenItemsSlice.actions
 
 export const selectItems = (rootState: RootState) => rootState.itemsState.value
 
-export default itemsSlice.reducer
+export default chosenItemsSlice.reducer
