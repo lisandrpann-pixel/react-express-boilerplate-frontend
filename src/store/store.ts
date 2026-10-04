@@ -2,12 +2,14 @@ import { api } from '@/api'
 import { configureStore } from '@reduxjs/toolkit'
 import itemsReducer from './itemsState.slice'
 import chosenItemsReducer from './chosenItemsState.slice'
+import sharedFlagsReducer from './sharedFlagsState.slice'
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     itemsState: itemsReducer,
     chosenItemsState: chosenItemsReducer,
+    sharedFlagsState: sharedFlagsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

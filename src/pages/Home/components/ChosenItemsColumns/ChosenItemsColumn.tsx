@@ -13,10 +13,12 @@ import styles from './ChosenItemsColumn.module.css'
 import {
   filterChosenItemsAction,
   loadChosenItemsAction,
+  refetchChosenItemsAction,
   selectChosenItems,
 } from '@/store/chosenItemsState.slice'
 import { toastSuccess } from '@/utils/notifications.utils'
 import { chooseItemAction } from '@/store/itemsState.slice'
+import { selectHasToRefetchChosenItems, setHasToRefetchChosenItemsAction } from '@/store/sharedFlagsState.slice'
 
 export const ChosenItemsColumn = () => {
   const {
@@ -29,6 +31,8 @@ export const ChosenItemsColumn = () => {
     switchOnLoader,
     switchOffLoader,
   } = useItemsColumn()
+
+  const hasToRefetchChosenItems = useAppSelector(selectHasToRefetchChosenItems)
 
   const [getItems, { data, isSuccess: isSuccessGetItems }] =
     useLazyGetApiItemsQuery()
@@ -77,6 +81,32 @@ export const ChosenItemsColumn = () => {
     ]
   )
 
+  const refetchItems = useCallback(
+    async () => {
+      switchOnLoader()
+
+      const response = await getChosenItems({
+        offset: 0,
+        limit: paginationRef.current.offset || PAGINATION_DEFAULT.limit,
+      })
+
+      if (response.data) {
+        paginationRef.current = {
+          ...response.data.pagination,
+          offset: response.data.pagination.hasMore
+            ? paginationRef.current.offset + response.data.pagination.limit
+            : paginationRef.current.offset,
+        }
+
+        dispatch(refetchChosenItemsAction(response.data.data))
+        dispatch(setHasToRefetchChosenItemsAction(false))
+      }
+
+      switchOffLoader()
+    },
+    [dispatch, getChosenItems, paginationRef, switchOffLoader, switchOnLoader]
+  )
+
   const loadItems = useCallback(
     async (props: GetApiItemsApiArg = {}) => {
       switchOnLoader()
@@ -99,7 +129,7 @@ export const ChosenItemsColumn = () => {
     [dispatch, getChosenItems, paginationRef, switchOffLoader, switchOnLoader]
   )
 
-  const chooseItem = useCallback(
+  const removeItem = useCallback(
     async (chosenItem: GetApiItemsByIdApiResponse) => {
       switchOnLoader()
 
@@ -112,6 +142,7 @@ export const ChosenItemsColumn = () => {
 
       if (changeItemResponse.data) {
         dispatch(chooseItemAction(chosenItem))
+        dispatch(setHasToRefetchChosenItemsAction(true))
 
         toastSuccess(
           `Пользователь с id - ${chosenItem.id} ${
@@ -125,6 +156,12 @@ export const ChosenItemsColumn = () => {
     [changeItem, dispatch, switchOffLoader, switchOnLoader]
   )
 
+  useEffect(() => {
+    if (hasToRefetchChosenItems) {
+      refetchItems()
+    }
+  }, [hasToRefetchChosenItems, refetchItems])
+  
   useEffect(() => {
     loadItems()
   }, [loadItems])
@@ -150,7 +187,7 @@ export const ChosenItemsColumn = () => {
           <Card 
             {...item} 
             key={item.id} 
-            onChoose={chooseItem}
+            onChoose={removeItem}
             displayDelete
           />
         ))

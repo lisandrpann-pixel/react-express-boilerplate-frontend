@@ -25,6 +25,7 @@ import {
 } from '@/store/itemsState.slice'
 import { Loader } from '@/components/Loader'
 import { useItemsColumn } from '../../hooks/useItemsColumn'
+import { setHasToRefetchChosenItemsAction } from '@/store/sharedFlagsState.slice'
 
 export const ItemsColumn = () => {
   const {
@@ -116,6 +117,7 @@ export const ItemsColumn = () => {
 
       if (changeItemResponse.data) {
         dispatch(chooseItemAction(chosenItem))
+        dispatch(setHasToRefetchChosenItemsAction(true))
 
         toastSuccess(
           `Пользователь с id - ${chosenItem.id} ${
