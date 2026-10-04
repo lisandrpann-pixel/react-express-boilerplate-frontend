@@ -1,7 +1,7 @@
-import type { GetApiUsersByIdApiResponse } from '@/api'
+import type { GetApiItemsByIdApiResponse } from '@/api'
 import type { ActionAsync } from '@/types/common.types'
 
-export interface CardProps extends GetApiUsersByIdApiResponse {
-  onChoose?: ActionAsync<GetApiUsersByIdApiResponse>
+export interface CardProps extends GetApiItemsByIdApiResponse {
+  onChoose?: ActionAsync<GetApiItemsByIdApiResponse>
   displayChosen?: boolean
 }

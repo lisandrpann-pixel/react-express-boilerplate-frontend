@@ -4,34 +4,34 @@ import ResetIcon from '@/assets/reset.svg?react'
 import { memo, useEffect, useState, type FC } from 'react'
 import type { FilterFormProps } from './FilterForm.types'
 import { ICONS_SIZE } from '@/configs/layout.configs'
-import { Button } from '../Button'
-import { Input } from '../Input'
+import { Button } from '../../../../components/Button'
+import { Input } from '../../../../components/Input'
 import classNames from 'classnames'
 
 export const FilterForm: FC<FilterFormProps> = memo(
   ({ onSubmit, className, hasToCleanForm }) => {
-    const [userId, setUserId] = useState('')
+    const [itemId, setItemId] = useState('')
 
     const submitForm = (e: React.SubmitEvent<HTMLFormElement>) => {
       e.preventDefault()
 
-      onSubmit?.(userId)
+      onSubmit?.(itemId)
     }
 
-    const changeUserId = (
+    const changeItemId = (
       e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>
     ) => {
-      setUserId(e.target.value)
+      setItemId(e.target.value)
     }
 
     const resetForm = () => {
-      setUserId('')
+      setItemId('')
       onSubmit?.(undefined)
     }
 
     useEffect(() => {
       if (hasToCleanForm) {
-        setUserId('')
+        setItemId('')
       }
     }, [hasToCleanForm])
 
@@ -43,8 +43,8 @@ export const FilterForm: FC<FilterFormProps> = memo(
         <Input
           name="filterById"
           placeholder="id, диапазон ids: 1-12, список ids: 1,2,12"
-          value={userId}
-          onChange={changeUserId}
+          value={itemId}
+          onChange={changeItemId}
         />
 
         <Button type="submit">

@@ -1,19 +1,19 @@
-import styles from './AddUserForm.module.css'
+import styles from './AddItemForm.module.css'
 import SendIcon from '@/assets/send.svg?react'
 import CloseIcon from '@/assets/close.svg?react'
 import { memo, useState, type FC } from 'react'
-import type { AddUserFormProps } from './AddUserForm.types'
+import type { AddItemFormProps } from './AddItemForm.types'
 import { ICONS_SIZE } from '@/configs/layout.configs'
-import { Button } from '../Button'
-import { Input } from '../Input'
+import { Button } from '../../../../components/Button'
+import { Input } from '../../../../components/Input'
 import AddIcon from '@/assets/add.svg?react'
 import classNames from 'classnames'
 
-export const AddUserForm: FC<AddUserFormProps> = memo(
+export const AddItemForm: FC<AddItemFormProps> = memo(
   ({ onSubmit, className }) => {
     const [formVisibility, setFormVisibility] = useState(false)
 
-    const [userId, setUserId] = useState('')
+    const [itemId, setItemId] = useState('')
 
     const showForm = () => {
       setFormVisibility(true)
@@ -22,19 +22,19 @@ export const AddUserForm: FC<AddUserFormProps> = memo(
     const submitForm = (e: React.SubmitEvent<HTMLFormElement>) => {
       e.preventDefault()
 
-      onSubmit?.(userId)
+      onSubmit?.(itemId)
 
-      setUserId('')
+      setItemId('')
     }
 
-    const changeUserId = (
+    const changeItemId = (
       e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>
     ) => {
-      setUserId(e.target.value)
+      setItemId(e.target.value)
     }
 
     const closeForm = () => {
-      setUserId('')
+      setItemId('')
       setFormVisibility(false)
     }
 
@@ -46,10 +46,10 @@ export const AddUserForm: FC<AddUserFormProps> = memo(
         {formVisibility ? (
           <div className={styles.form}>
             <Input
-              name="userId"
+              name="itemId"
               placeholder="Новый id"
-              value={userId}
-              onChange={changeUserId}
+              value={itemId}
+              onChange={changeItemId}
             />
 
             <Button type="submit">

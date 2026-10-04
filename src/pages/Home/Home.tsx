@@ -1,23 +1,21 @@
 import styles from './Home.module.css'
-import { AllUsersColumn } from './components/AllUsersColumn'
-import { ChosenUsersColumn } from './components/ChosenUsersColumn'
-import { useLazyGetApiUsersQuery, type GetApiUsersApiArg } from '@/api'
+import { AllItemsColumn } from './components/ItemsColumn'
+import { ChosenItemsColumn } from './components/ChosenItemsColumns'
+import { useLazyGetApiItemsQuery, type GetApiItemsApiArg } from '@/api'
 import { useCallback, useState } from 'react'
 import { Loader } from '@/components/Loader'
 
 export const Home = () => {
   const [isLoadingData, setLoadingData] = useState(true)
   
-  const [getUsers, { data: dataGetUsers, isSuccess: isSuccessGetUsers }] = useLazyGetApiUsersQuery()
-
-  const hasMoreUsers = dataGetUsers?.pagination.hasMore
-
-  const [getUsersChosen, { data: dataGetUsersChosen, isSuccess: isSuccessGetUsersChosen }] = useLazyGetApiUsersQuery()
-
-  const hasMoreChosenUsers = dataGetUsersChosen?.pagination.hasMore
-
-  const getUsersWithFilters = useCallback((props: GetApiUsersApiArg) => 
-      getUsersChosen({ ...props, isChosenFilter: true }), [getUsersChosen])
+  const [getItems, { data: dataGetItems, isSuccess: isSuccessGetItems }] = useLazyGetApiItemsQuery()
+  const [getItemsChosen, { data: dataGetItemsChosen, isSuccess: isSuccessGetItemsChosen }] = useLazyGetApiItemsQuery()
+  
+  const hasMoreItems = dataGetItems?.pagination.hasMore
+  const hasMoreChosenItems = dataGetItemsChosen?.pagination.hasMore
+  
+  const getItemsWithFilters = useCallback((props: GetApiItemsApiArg) => 
+      getItemsChosen({ ...props, isChosenFilter: true }), [getItemsChosen])
 
   const switchOnLoader = useCallback(() => {
     setLoadingData(true)
@@ -27,26 +25,25 @@ export const Home = () => {
     setLoadingData(false)
   }, [])
 
-  const isSuccessRequest = isSuccessGetUsers && isSuccessGetUsersChosen
+  const isSuccessRequest = isSuccessGetItems && isSuccessGetItemsChosen
 
   return (
     <div className={styles.root}>
       <Loader isLoading={isLoadingData} isSuccess={isSuccessRequest}>
         <main className={styles.main}>
-          <AllUsersColumn 
-            getUsers={getUsers} 
-            getUsersChosen={getUsersWithFilters}
+          <AllItemsColumn 
+            getItems={getItems} 
             switchOnLoader={switchOnLoader}
             switchOffLoader={switchOffLoader}
-            hasMore={hasMoreUsers}
+            hasMore={hasMoreItems}
             isLoadingData={isLoadingData}
           />
 
-          <ChosenUsersColumn
-            getUsers={getUsersWithFilters} 
+          <ChosenItemsColumn
+            getItems={getItemsWithFilters} 
             switchOnLoader={switchOnLoader}
             switchOffLoader={switchOffLoader}
-            hasMore={hasMoreChosenUsers}
+            hasMore={hasMoreChosenItems}
             isLoadingData={isLoadingData}
           />
         </main>

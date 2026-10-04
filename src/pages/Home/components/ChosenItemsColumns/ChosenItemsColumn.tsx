@@ -4,38 +4,36 @@ import { Column } from '@/components/Column'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import styles from './shared.module.css'
-import { FilterForm } from '@/components/FilterForm'
-import type { UseGetUsersProps } from '../Home.types'
-import { useGetUsers } from '../hooks/useGetUsers'
+import { FilterForm } from '@/pages/Home/components/FilterForm'
+import type { UseGetItemsProps } from '../../Home.types'
+import { useGetItems } from '../../hooks/useGetItems'
 import type { FC } from 'react'
 import { ColumnHeader } from '@/components/ColumnHeader'
 
-export const ChosenUsersColumn: FC<UseGetUsersProps> = (props) => {
+export const ChosenItemsColumn: FC<UseGetItemsProps> = (props) => {
   const {
     hasMore,
   } = props
 
   const {
     thresholdRef,
-    filterUsers,
-    users,
-  } = useGetUsers(props)
+    filterItems,
+    items,
+  } = useGetItems(props)
 
   return (
       <DndProvider backend={HTML5Backend}>
         <Column>
           <ColumnHeader>
             <FilterForm
-              onSubmit={filterUsers}
-              className={styles.filterForm}
+              onSubmit={filterItems}
             />
           </ColumnHeader>
 
-          {users.map((user) => (
+          {items.map((item) => (
             <Card 
-              {...user} 
-              key={user.id} 
+              {...item} 
+              key={item.id} 
             />
           ))}
 
