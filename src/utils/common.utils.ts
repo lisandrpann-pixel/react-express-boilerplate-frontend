@@ -1,5 +1,5 @@
 export const scrollToTop = (element?: HTMLDivElement | null) => {
-  (element || window).scrollTo({ top: 0, behavior: 'smooth' })
+  (element || window).scrollTo({ top: 0 })
 }
 
 export const mergeItems = <T extends { id: number }>(firstArr: T[], secondArr: T[]): T[] => {

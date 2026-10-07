@@ -8,3 +8,19 @@
   overflow: auto;
   height: calc(100vh - var(--g-gap-lg) * 2);
 }
+
+.flushedToast {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+
+  footer {
+    display: flex;
+    gap: 12px;
+  }
+
+  footer span {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
