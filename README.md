@@ -141,6 +141,17 @@ npm run generate-api
 | -------------- | ------------------------------------- | ------------------------------------------- |
 | `VITE_API_URL` | `.env.development`, `.env.production` | адрес бэкенда, используется dev-прокси Vite |
 
+## Деплой
+
+`Dockerfile` собирает статику (`npm run build`) и отдаёт её через nginx
+(`nginx.conf`): SPA-fallback + reverse-proxy `/api`, `/health`, `/api-docs`
+на backend:3000. Стек поднимается compose-файлом из репозитория backend
+(см. README backend, раздел «Деплой»), frontend собирается оттуда как
+соседний каталог `../frontend`.
+
+В production-сборке `VITE_API_URL` не используется — запросы идут по
+относительным путям `/api/...` на тот же origin.
+
 ## Конвенции
 
 - Алиас `@` → `src` (настроен в `tsconfig.app.json` и `vite.config.ts`).
