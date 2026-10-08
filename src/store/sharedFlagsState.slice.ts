@@ -11,7 +11,7 @@ export interface SharedFlagsState {
 
 const initialState: SharedFlagsState = {
   value: {
-    hasToRefetchChosenItems: false
+    hasToRefetchChosenItems: false,
   },
 }
 
@@ -19,15 +19,17 @@ export const sharedFlagsSlice = createSlice({
   name: SLICES_NAMES.sharedFlagsState,
   initialState,
   reducers: {
-    setHasToRefetchChosenItems: (sharedFlagsState, action: PayloadAction<boolean>) => {
+    setHasToRefetchChosenItems: (
+      sharedFlagsState,
+      action: PayloadAction<boolean>
+    ) => {
       sharedFlagsState.value.hasToRefetchChosenItems = action.payload
     },
   },
 })
 
-export const {
-  setHasToRefetchChosenItems: setHasToRefetchChosenItemsAction,
-} = sharedFlagsSlice.actions
+export const { setHasToRefetchChosenItems: setHasToRefetchChosenItemsAction } =
+  sharedFlagsSlice.actions
 
 export const selectHasToRefetchChosenItems = (rootState: RootState) =>
   rootState.sharedFlagsState.value.hasToRefetchChosenItems

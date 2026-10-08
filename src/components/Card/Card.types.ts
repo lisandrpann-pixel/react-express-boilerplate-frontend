@@ -5,4 +5,10 @@ export interface CardProps extends GetApiItemsByIdApiResponse {
   onChoose?: ActionAsync<GetApiItemsByIdApiResponse>
   displayChosen?: boolean
   displayDelete?: boolean
+  dndRef?: (element: Element | null) => void
+  className?: string
+}
+
+export interface CardDndProps extends CardProps {
+  index: number
 }

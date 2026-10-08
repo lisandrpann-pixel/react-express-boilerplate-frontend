@@ -114,6 +114,7 @@ export const ItemsColumn = () => {
         body: {
           ...chosenItem,
           isChosen: !chosenItem.isChosen,
+          order: chosenItem.id,
         },
       })
 
@@ -142,14 +143,16 @@ export const ItemsColumn = () => {
       })
 
       if (createItemResponse.data) {
-        toastInfo(`Пользователь с id - ${itemId} добавлен в очередь на создание.`)
+        toastInfo(
+          `Пользователь с id - ${itemId} добавлен в очередь на создание.`
+        )
       }
 
       switchOffLoader()
     },
     [createItem, switchOffLoader, switchOnLoader]
   )
-  
+
   const refetchItemsAfterAdd = useCallback(async () => {
     scrollToTop()
 
@@ -181,7 +184,7 @@ export const ItemsColumn = () => {
         </section>,
         {
           autoClose: false,
-          closeOnClick: false
+          closeOnClick: false,
         }
       )
     }
@@ -218,12 +221,7 @@ export const ItemsColumn = () => {
 
         {itemsState.length ? (
           itemsState.map((item) => (
-            <Card
-              {...item}
-              key={item.id}
-              onChoose={chooseItem}
-              displayChosen
-            />
+            <Card {...item} key={item.id} onChoose={chooseItem} displayChosen />
           ))
         ) : (
           <Empty />

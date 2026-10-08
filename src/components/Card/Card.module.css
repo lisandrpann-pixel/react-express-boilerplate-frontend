@@ -26,9 +26,13 @@
   }
 }
 
-.unchecked, 
+.unchecked,
 .delete {
   path {
     stroke: var(--g-color-accent);
   }
+}
+
+.draggable {
+  cursor: grab;
 }

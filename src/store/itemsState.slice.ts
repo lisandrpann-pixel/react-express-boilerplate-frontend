@@ -38,6 +38,7 @@ export const itemsSlice = createSlice({
 
       if (item) {
         item.isChosen = !item.isChosen
+        item.order = item.id
       }
     },
   },

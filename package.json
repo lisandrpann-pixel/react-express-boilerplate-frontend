@@ -12,13 +12,13 @@
     "generate-api": "npx @rtk-query/codegen-openapi src/api/openapi-config.ts"
   },
   "dependencies": {
+    "@dnd-kit/react": "^0.5.0",
+    "@dnd-kit/sortable": "^10.0.0",
     "@reduxjs/toolkit": "^2.13.0",
     "axios": "^1.20.0",
     "classnames": "^2.5.1",
     "http-status-codes": "^2.3.0",
     "react": "^19.2.8",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.2.8",
     "react-intersection-observer": "^11.0.1",
     "react-redux": "^9.3.0",
