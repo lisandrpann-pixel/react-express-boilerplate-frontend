@@ -151,12 +151,6 @@ export const ChosenItemsColumn = () => {
       if (changeItemResponse.data) {
         dispatch(chooseItemAction(chosenItem))
         dispatch(setHasToRefetchChosenItemsAction(true))
-
-        toastSuccess(
-          `Пользователь с id - ${chosenItem.id} ${
-            chosenItem.isChosen ? 'убран' : 'выбран'
-          }!`
-        )
       }
 
       switchOffLoader()
@@ -187,7 +181,7 @@ export const ChosenItemsColumn = () => {
       } else if (!nextItem) {
         fromNewOrder = toItem.order + 1
       } else {
-        fromNewOrder = toItem.order + (nextItem.order - toItem.order) / 2
+        fromNewOrder = prevItem.order + (toItem.order - prevItem.order) / 2
       }
 
       const changeItemResponse = await changeItem({
