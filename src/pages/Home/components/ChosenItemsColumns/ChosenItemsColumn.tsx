@@ -41,13 +41,15 @@ export const ChosenItemsColumn = () => {
     isThresholdInView,
     switchOnLoader,
     switchOffLoader,
+    isSuccessInitialData,
+    switchOnSuccessInitialData,
   } = useItemsColumn()
 
   const hasToRefetchChosenItems = useAppSelector(selectHasToRefetchChosenItems)
 
   const dispatch = useAppDispatch()
 
-  const [getItems, { data, isSuccess: isSuccessGetItems }] =
+  const [getItems, { data }] =
     useLazyGetApiItemsQuery()
 
   const getChosenItems = useCallback(
@@ -132,9 +134,10 @@ export const ChosenItemsColumn = () => {
         dispatch(loadChosenItemsAction(response.data.data))
       }
 
+      switchOnSuccessInitialData()
       switchOffLoader()
     },
-    [dispatch, getChosenItems, paginationRef, switchOffLoader, switchOnLoader]
+    [dispatch, getChosenItems, paginationRef, switchOffLoader, switchOnLoader, switchOnSuccessInitialData]
   )
 
   const removeItem = useCallback(
@@ -181,7 +184,12 @@ export const ChosenItemsColumn = () => {
       } else if (!nextItem) {
         fromNewOrder = toItem.order + 1
       } else {
-        fromNewOrder = prevItem.order + (toItem.order - prevItem.order) / 2
+        fromNewOrder = toItem.order > fromItem.order
+          /** Перемещаем элемент вниз */
+          ? toItem.order + (nextItem.order - toItem.order) / 2
+          
+          /** Перемещаем элемент вверх */
+          : prevItem.order + (toItem.order - prevItem.order) / 2
       }
 
       const changeItemResponse = await changeItem({
@@ -238,7 +246,7 @@ export const ChosenItemsColumn = () => {
         reOrderItems(from, to)
       }}
     >
-      <Loader isLoading={isLoadingData} isSuccess={isSuccessGetItems}>
+      <Loader isLoading={isLoadingData} isSuccess={isSuccessInitialData}>
         <Column ref={columnRef} className={styles.column}>
           <ColumnHeader>
             <FilterForm onSubmit={filterItems} />

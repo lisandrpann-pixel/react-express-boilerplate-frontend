@@ -39,9 +39,11 @@ export const ItemsColumn = () => {
     isThresholdInView,
     switchOnLoader,
     switchOffLoader,
+    isSuccessInitialData,
+    switchOnSuccessInitialData,
   } = useItemsColumn()
 
-  const [getItems, { data, isSuccess: isSuccessGetItems }] =
+  const [getItems, { data }] =
     useLazyGetApiItemsQuery()
 
   const hasMore = data?.pagination.hasMore
@@ -101,9 +103,10 @@ export const ItemsColumn = () => {
         dispatch(loadItemsAction(response.data.data))
       }
 
+      switchOnSuccessInitialData()
       switchOffLoader()
     },
-    [dispatch, getItems, paginationRef, switchOffLoader, switchOnLoader]
+    [dispatch, getItems, paginationRef, switchOffLoader, switchOnLoader, switchOnSuccessInitialData]
   )
 
   const chooseItem = useCallback(
@@ -121,12 +124,6 @@ export const ItemsColumn = () => {
       if (changeItemResponse.data) {
         dispatch(chooseItemAction(chosenItem))
         dispatch(setHasToRefetchChosenItemsAction(true))
-
-        toastSuccess(
-          `Пользователь с id - ${chosenItem.id} ${
-            chosenItem.isChosen ? 'убран' : 'выбран'
-          }!`
-        )
       }
 
       switchOffLoader()
@@ -210,7 +207,7 @@ export const ItemsColumn = () => {
   }, [loadItems, isThresholdInView, paginationRef])
 
   return (
-    <Loader isLoading={isLoadingData} isSuccess={isSuccessGetItems}>
+    <Loader isLoading={isLoadingData} isSuccess={isSuccessInitialData}>
       <Column ref={columnRef} className={styles.column}>
         <ColumnHeader>
           <FilterForm
